@@ -10,7 +10,7 @@ Curso propuesto por el grupo de trabajo Semana de Ingenio y Diseño (**SID**) de
 
 ## Objetivos
 
-* Reconocer la forma de utilizar Canvas para pintar diferentes elementos en pantalla y que objetos intervienen en este proceso.
+* Reconocer la forma de utilizar Canvas para pintar diferentes elementos en pantalla e identificar que objetos intervienen en este proceso.
 * Identificar las particularidades que tiene cada elemento para pintarse en pantalla y su forma de crearse.
 * Explicar el funcionamiento de las aréas en canvas para realizar distintas acciónes entre elementos que pintemos en pantalla.
 * Hacer uso introductorio de Eventos del Mouse para pintar objetos en pantalla con una interacción del usuario.
@@ -36,9 +36,9 @@ En esta sesión vamos a ver el uso de **Canvas** para pintar varias cosas dentro
 
 # Preparativos para crear el Canvas.
 
-**Canvas** es un elemento característico de la librería **awt** de Java y es fundamental para la creación de figuras, animaciónes formas y demás que no se podrían construir con los objetos gráficos comunes, hasta el momento los objetos gráficos que hemos manejado hacen parte de la librería **Swing** de Java, existen diversas opiniones con el uso combinado de estas dos librerías pero no hay de que preocuparse, al fin de cuentas **Swing** esta totalmente basada en la librería **awt** por lo que esta pensada desde el inicio a convivir con su antecesora. 
+**Canvas** es un elemento característico de la librería **awt** de Java y es fundamental para la creación de figuras, animaciónes, imágenes y demás formas que no se podrían construir con los objetos gráficos comunes, hasta el momento los objetos gráficos que hemos manejado hacen parte de la librería **Swing** de Java, existen diversas opiniones con el uso combinado de estas dos librerías pero no hay de que preocuparse, al fin de cuentas **Swing** esta totalmente basada en la librería **awt** por lo que esta pensada desde el inicio a convivir con su antecesora. 
 
-El uso de canvas es importante en la creación de **Juegos2D** ya que este elemento proporciona muchas libertades para plasmar en pantalla y ademas una gran optimización para animaciónes e interacciones con el usuario, También es usado para la representación de gráficas como diagramas de barras, diagrama pastel, lineas temporales, diagramas de Gantt etc. Canvas no es exclusivo de Java, otros lenguajes como **JavaScript** usan el mismo modelo y tienen los mismos principios para pintar en pantalla.
+El uso de canvas es importante en la creación de **Juegos2D** ya que este elemento proporciona muchas libertades para plasmar en pantalla y ademas una gran optimización para animaciónes e interacciones con el usuario. También es usado para la representación de gráficas como diagramas de barras, diagrama pastel, lineas temporales, diagramas de Gantt etc. Canvas no es exclusivo de Java, otros lenguajes como **JavaScript** usan el mismo modelo y tienen los mismos principios para pintar en pantalla.
 
 Vamos a crear un nuevo componente al cual llamaremos **Lienzo** dentro del paquete **components** como este será un nuevo componente se creara con sus respectivas clases.
 
@@ -82,6 +82,7 @@ Vamos a terminar de cellar la inyección:
 
 * **Declaración de clase Component:**
 ```javascript
+// Dentro de la clase LienzoTemplate
 private LienzoComponent lienzoComponent;
 ```
 * **Terminando de crear la inyección:**
@@ -104,14 +105,14 @@ private RecursosService sRecursos;
 this.sRecursos = RecursosService.getService();
 ```
 
-Como este componente esta heredando de un **Canvas** es necesario implementar un método especial típico de un canvas el cual es un **paint**, como estamos heredando y no implementando este método se debe implementar de forma manual y es importante que tenga el decorador **@Override** o de lo contrario para Java este método será otro método cualquiera:
+Como este componente esta heredando de un **Canvas**, es necesario implementar un método especial típico de un canvas el cual es un **paint**, como estamos heredando y no implementando este método se debe implementar de forma manual y es importante que tenga el decorador **@Override** o de lo contrario para Java este método será otro método cualquiera:
 ```javascript
 @Override
 public void paint(Graphics g){
 
 }
 ```
-El decorador **@Override** indica que es un método implementado, como hemos visto con el uso de los eventos, esté método **Paint**  es un método especial que se ejecuta automáticamente una vez se llama a la clase **Template**, esto hace parte del ciclo de vida de un canvas y se ejecuta estrictamente después de que se ejecuten las instrucciones del constructor. Si no tiene el decorador mencionado el método será un método cualquiera y se deberá ejecutar manualmente (llamando al método). Por otro lado este método recibe un parámetro de tipo **Graphics**, este es el objeto que se encargará de pintar en pantalla.
+El decorador **@Override** indica que es un método implementado, como hemos visto con el uso de los eventos, esté método **Paint**  es un método especial que se ejecuta automáticamente una vez se llama a la clase **Template**, esto hace parte del ciclo de vida de un canvas y se ejecuta estrictamente después de que se ejecuten las instrucciones del constructor. Si no tiene el decorador mencionado el método será tomado como cualquier otro y se deberá ejecutar manualmente (llamando al método). Por otro lado este método recibe un parámetro de tipo **Graphics**, este es el objeto que se encargará de pintar en pantalla.
 
 Ahora vamos a configurar las características físicas del componente:
 
@@ -148,7 +149,7 @@ this.lienzoComponent = new LienzoComponent();
 this.pDibujo.add(lienzoComponent.getLienzoTemplate());
 ```
 
-Ahora podemos comprobar la incorporación de nuestro componente, sin embargo, pasa algo curioso, cuando pasamos encimo del canvas, como este esta posicionado encima del panel **pDibujos** ya no se están escuchando los **eventos del Mouse**, tenemos varias opciones para solucionar este conflicto, por ejemplo podemos pasar las configuraciones de los eventos del mouse hacia el hijo, sin embargo esto requiere una modificación del código que ya hemos implementado, para no realizar esta modificación podemos pasar la escucha de los mismos eventos desde el padre contenedor hacia el componente.
+Ahora podemos comprobar la incorporación de nuestro componente, sin embargo, pasa algo curioso, cuando pasamos encima del canvas, como este esta posicionado encima del panel **pDibujos** ya no se están escuchando los **eventos del Mouse**, tenemos varias opciones para solucionar este conflicto. Por ejemplo podemos pasar el código de los eventos del mouse en el hijo, sin embargo esto requiere una modificación del código que ya hemos implementado, para no realizar esta modificación podemos pasar la escucha de los mismos eventos desde el padre contenedor hacia el componente hijo.
 
 Dentro de la clase **LienzoComponent** vamos a pedir como parámetro al panelContenedor, al mismo tiempo se lo vamos a pasar como argumento a la clase **Template**:
 
@@ -172,7 +173,7 @@ public LienzoTemplate(LienzoComponent lienzoComponent, JPanel pPadre){
 }
 ```
 
-Vamos a agregar la escucha de cada uno de los métodos al componente, para esto llamaremos los métodos correspondientes para la escucha de este tipo de eventos:
+Vamos a agregar la escucha de cada uno de los eventos del Mouse al componente, para esto llamaremos los métodos correspondientes para la escucha de este tipo de eventos:
 ```javascript
 // Dentro del constructor
 this.addMouseListener();
@@ -184,6 +185,7 @@ Ahora vamos a obtener los eventos del mouse que esta escuchando actualmente el p
 * **getMouseListeners**.
 * **getMouseMotionListeners**.
 * **getMouseWheelListeners**.
+
 Correspondientemente:
 
 ```javascript
@@ -204,14 +206,18 @@ this.addMouseWheelListener(pPadre.getMouseWheelListeners()[0]);
 
 Ahora una vez abramos nuestra aplicación podemos comprobar que efectivamente ahora el canvas también es capaz de escuchar los eventos del mouse que habíamos configurado para el panel contenedor. Nuestro canvas esta listo para usarse, en la siguiente sección vamos a explicar la forma en como pintar diferentes elementos en pantalla.
 
+<div align='center'>
+    <img  src='https://i.imgur.com/ZIWVIB7.png'>
+    <p>Componente Lienzo con la escucha de eventos del Mouse de su componente Padre.</p>
+</div>
 
 # Pintando sobre el Canvas.
 
-Vamos a explicar a continuación como pintar una serie de figuras, ademas se explicara una serie de particularidades en los momentos pertinentes.
+Vamos a explicar a continuación como pintar una serie de figuras, ademas se explicará una serie de particularidades en los momentos pertinentes.
 
 ## Pintando Textos / Strings
 
-Vamos a ubicarnos dentro del método **paint** y vamos a usar el objeto **graphics: g**, este objeto tiene una serie de métodos que nos proporcionara herramientas para pintar sobre el canvas. Para pintar un **Texto** vamos a utilizar el método **drawString**.
+Vamos a ubicarnos dentro del método **paint** y vamos a usar el objeto **Graphics: g**, este objeto tiene una serie de métodos que nos proporcionara herramientas para pintar sobre el canvas. Para pintar un **Texto** vamos a utilizar el método **drawString**.
 Este método recibe varias cosas por parámetro:
 * **String:** Texto que se va a pintar:
 * **Posición X:** Posición del texto en el eje X dentro del canvas.
@@ -238,7 +244,7 @@ public void paint(Graphics g){
     g.drawString("Rectangulos", (this.getWidth() / 2) - 50, 15);
 }
 ```
-Es importante que los métodos **setColor y setFont** vayan antes de pintar el String o cualquier figura, una vez cambiamos el color le estamos indicando al canvas que todo lo que se vaya a pintar de ahí en adelante tendrá ese color, si quisiéramos pintar mas adelante una figura con otro color se debe llamar nuevamente el método **setColor** y configurarle el color que se usara. Lo mismo pasaría en caso de querer cambiar la fuente:
+Es importante que los métodos **setColor y setFont** vayan antes de pintar el String o cualquier figura, una vez cambiamos el color le estamos indicando al canvas que todo lo que se vaya a pintar de ahí en adelante tendrá ese color, si quisiéramos pintar mas adelante una figura con otro color se debe llamar nuevamente el método **setColor** y configurarle el color que se usará. Lo mismo pasaría en caso de querer cambiar la fuente:
 
 <div align='center'>
     <img  src='https://i.imgur.com/PY8RMUF.png'>
@@ -275,6 +281,7 @@ public void paint(Graphics g){
 Para pintar rectángulos y figuras en general dentro del canvas el objeto **g** proporcionan dos tipos de métodos:
 * **draw**: Dibuja la figura sin un relleno, es decir solo pintara el contorno de la figura.
 * **fill**: Dibuja la figura con relleno.
+
 En ambos casos pintara la figura con el color que se ha configurado previamente.
 
 Vamos a crear un método llamado **pintarRectangulos** de igual forma recibirá el objeto **Graphics** para poder pintarlos:
@@ -302,8 +309,9 @@ public void pintarRectangulos(Graphics g){
     g.fillRect(160, 0, 200, 30);
 }
 ```
-Vamos a llamar el método desde el método **paint**:
+Llamamos el método desde el método **paint**:
 ```javascript
+// Dentro de Paint
 this.pintarRectangulos(g);
 ```
 
@@ -312,7 +320,7 @@ this.pintarRectangulos(g);
     <p>Rectángulo pintado dentro del canvas</p>
 </div>
 
-Se puede observar que el rectángulo se pinto de forma correcta y este tiene relleno, sin embargo este esta tapando al String que previamente habíamos pintado. Esto se hizo a propósito para revisar las particularidades con el **eje z** y es que a diferencia de los objetos gráficos de **Swing** en el canvas a medida que vamos pintando un elemento, este se va a posicionar más al frente que los elementos previos, asi que hay que tener un cuidado especial con el eje Z en estos casos, vamos a cambiar de lugar y tamaño del rectángulo, ademas vamos a cambiar el color a azul nuevamente:
+Se puede observar que el rectángulo se pinto de forma correcta y este tiene relleno, sin embargo este esta tapando al String que previamente habíamos pintado. Esto se hizo a propósito para revisar las particularidades con el **eje Z** y es que a diferencia de los objetos gráficos de **Swing** en el canvas a medida que vamos pintando un elemento, este se va a posicionar más al frente que los elementos previos, asi que hay que tener un cuidado especial con el eje Z en estos casos, vamos a cambiar de lugar y tamaño del rectángulo, ademas vamos a cambiar el color a azul nuevamente:
 ```javascript
 public void pintarRectangulos(Graphics g){
     g.setColor(sRecursos.getColorAzul());
@@ -424,7 +432,7 @@ Para dibujar esta figura podemos usar los métodos **fillArc y drawArc** que rec
 * **Posición en grados donde comienza el arco**.
 * **Cantidad de grados que ocupa el arco**.
 
-Vamos a dibujar algunos de estos arcos para comprender un poco el concepto, creamos primero el método pintarArcos:
+Vamos a dibujar algunos de estos arcos para comprender un poco el concepto, creamos primero el método **pintarArcos**:
 
 ```javascript
 public void pintarArcos(Graphics g){
@@ -512,6 +520,7 @@ g.drawArc(135, 190, 100, 100, 270, 90);
 
 Vamos a dejar otros ejemplos de arcos:
 ```javascript
+// Dentro del método pintarArcos
 g.setColor(sRecursos.getColorAzul());
 g.fillArc(255, 190, 100, 100, 0, 180);
 
@@ -539,7 +548,7 @@ Ahora vamos a ejemplificar este objeto, pero como mencionamos este se deriva del
 g2d = (Graphics2D) g.create();
 ```
 
-Ya tenemos nuestro objeto **Graphics2D** ejemplificado y listo para usar, este objeto cuenta con varios algoritmos de renderizado para mejorar la calidad de lo que se esta pintando en pantalla, para invocar alguno de estos debemos llamar al método **setRenderingHint** y usar al objeto especial de **awt RenderingHints** quien es el objeto que proporciona estos algoritmos, vamos a usar dos de ellos:
+Ya tenemos nuestro objeto **Graphics2D** ejemplificado y listo para usar, este objeto cuenta con varios algoritmos de renderizado para mejorar la calidad de lo que se esta pintando en pantalla, para invocar algunos de estos debemos llamar al método **setRenderingHint** y usar al objeto especial de **awt RenderingHints** quien es el objeto que proporciona estos algoritmos, vamos a usar dos de ellos:
 
 ```javascript
 // Dentro del método paint
@@ -591,7 +600,7 @@ Noten que las figuras mejoraron su calidad significativamente y no solo estas, l
 
 ## Pintando Óvalos
 
-Los óvalos son circunferencias que se pintan de forma similar a los rectángulos esto debido a que recibe parámetros similares:
+Los óvalos son circunferencias que se pintan de forma similar a los rectángulos, esto debido a que recibe parámetros similares:
 * **Posición en X**.
 * **Posición en Y**.
 * **Ancho del ovalo**.
@@ -667,7 +676,7 @@ public void pintarPoligonos(Graphics2D g2d){
 }
 ```
 
-Vamos a configurar pasarle los parámetros necesarios, que son los dos arreglos para las coordenadas en cada eje y el numero de puntos que tiene la figura:
+Vamos a configurar los parámetros necesarios, que son los dos arreglos para las coordenadas en cada eje y el numero de puntos que tiene la figura:
 
 ```javascript
 public void pintarPoligonos(Graphics2D g2d){
@@ -697,7 +706,7 @@ public void pintarPoligonos(Graphics2D g2d){
 }
 ```
 
-Aquí configuramos el segundo punto que esta en las coordenadas (255 en x, 440 en y) y si se dan cuenta restamos pixeles en el eje X por lo que estará 50px mas a la izquierda, mientras que en el eje Y le sumamos es decir que estará abajo por 100px mas. Ahora solo falta configurar el siguiente punto:
+Aquí configuramos el segundo punto que esta en las coordenadas (255 en x, 440 en y) y si se dan cuenta restamos pixeles en el eje X por lo que estará 50px mas a la izquierda, por otro lado en el eje Y le sumamos pixeles, esto quiere decir que estará abajo por 100px más. Ahora solo falta configurar el siguiente punto:
 
 ```javascript
 public void pintarPoligonos(Graphics2D g2d){
@@ -734,15 +743,16 @@ g2d.drawPolygon(
 
 ## Pintando Imágenes 
 
-En el canvas también podemos dibujar imágenes, podemos pintar una imagén con el método **drawImage**, aunque podemos pintar una imagen con el propósito de mostrarla como se haría comúnmente con los Labels usualmente en canvas y en el desarrollo de videojuegos se toma otro enfoque ya que están basados en **sprites**, primero explicaremos la forma de pintar una imagen normalmente y luego entraremos a mas detalle con el otro enfoque. Primero creamos el método **pintarImagenes**:
+En el canvas también podemos dibujar imágenes, para esto debemos hacer uso del método **drawImage**. Aunque podemos pintar una imagen con el propósito de mostrarla como se haría comúnmente con los Labels, usualmente en canvas y en el desarrollo de videojuegos se toma otro enfoque, ya que se suelen usar **Sprites**, primero explicaremos la forma de pintar una imagen normalmente y luego entraremos a mas detalle con el otro enfoque. Primero creamos el método **pintarImagenes**:
 ```javascript
 public void pintarImagenes(Graphics2D g2d){
-        
+    
 }
 ```
 
 Lo primero que vamos a hacer es traernos la imagen a traves de un **ImageIcon**, asi que vamos a declarar un objeto de este tipo y de una vez lo vamos a ejemplificar:
 ```javascript
+// Al inicio de la clase LienzoTemplate
 private ImageIcon imagen = new ImageIcon("Clase13/resources/img/sonic.png");
 ```
 
@@ -771,14 +781,15 @@ this.pintarImagenes(g2d);
     <p>Pintando una imagén</p>
 </div>
 
-Sin embargo como hemos mencionado muchas veces pintar imágenes dentro del Canvas implica que se querrá realizar una animación y para esto los desarrolladores se basan en **sprites**, vamos a mostrar la imagén que queremos mostrar para explicar mejor el concepto:
+Sin embargo como hemos mencionado muchas veces pintar imágenes dentro del Canvas implica que se querrá realizar una animación y para esto los desarrolladores se basan en **Sprites**, vamos a mostrar la imagén que queremos pintar para explicar mejor el concepto:
 <div align='center'>
     <img  src='https://i.imgur.com/dtDRlaJ.png'>
     <p>Sprite de Sonic</p>
 </div>
 
 Como se dan cuenta un **Sprite** consiste en una secuencia que da paso a una animación, en este caso no nos vamos a enfocar en animaciones dentro del canvas pero si a la metodología que se utiliza con el pintado de este tipo de imágenes, por lo general en este tipo de casos no se busca pintar toda la imágen de una vez, mas bien se busca recorrer de alguna forma la imagen para ir mostrando cada parte de la animación.
-Para pintar una imagen general mostrando solo un tramo de ella podemos utilizar el método **drawImage** nuevamente pero esta vez vamos a necesitar mas parámetros:
+
+Para pintar solo un tramo de la imágen general podemos utilizar el método **drawImage** nuevamente pero esta vez vamos a necesitar mas parámetros:
 
 * **Posición inicial en X**. 
 * **Posición inicial en Y**. 
@@ -790,16 +801,17 @@ Para pintar una imagen general mostrando solo un tramo de ella podemos utilizar 
 * **Posición en Y final sobre la imagen General**.
 * **Observable:** Por ahora se va a dejar en null.
 
-Noten que ahora se tienen 4 parámetros nuevos y también algunos de ellos han cambiado, por ejemplo ya no vamos a manejar el ancho de la imagen, vamos a jugar con la posición inicial y final de la imagen siendo la posición inicial la coordenada de la parte superior izquierda, mientras que la posición final será la de la parte inferior derecha.
+Noten que ahora se tienen 4 parámetros nuevos y también algunos de ellos han cambiado. Por ejemplo ya no vamos a manejar el ancho y alto de la imagen, vamos a jugar con la posición inicial y final de la imagen dentro del canvas, siendo la posición inicial la coordenada de la **parte superior izquierda**, mientras que la posición final será la de la parte **inferior derecha** de la imágen.
  
-Por otra parte, con los 4 parámetros nuevos que estamos añadiendo es como si estuviéramos creando un cuadro imaginario dentro de la imágen general y solo pintara lo que esta dentro de ese cuadro: 
+Por otra parte, con los 4 parámetros nuevos que estamos añadiendo es como si estuviéramos creando un cuadro imaginario dentro de la imágen general y solo pintará lo que esta dentro de ese cuadro: 
 <div align='center'>
     <img  src='https://i.imgur.com/qisZrOE.png'>
     <p>Analogía de lo que sucede con los nuevos parámetros</p>
 </div>
 
-vamos a pintar nuestra primer imágen usando este enfoque, primero debemos obtener la imágen que contiene los Sprite asi que declararemos y ejemplificaremos un **ImageIcon** para obtener la imagen:
+vamos a pintar nuestra primer imágen usando este enfoque, primero debemos obtener la imágen que contiene el **Sprite** asi que declararemos y ejemplificaremos un **ImageIcon** para obtener la imagen:
 ```javascript
+// Al inicio de la clase LienzoTemplate
 private ImageIcon sprites = new ImageIcon("Clase13/resources/img/sprites.png");
 ```
 ***Nota:** El otro ImageIcon ya no se usara mas asi que se puede borrar su declaración y ejemplificación.*
@@ -821,8 +833,8 @@ public void pintarImagenes(Graphics2D g2d){
 
 En el anterior código estamos indicando:
 * La imágen se ubicara en la posición (90 en x, 490 en y) del Canvas.
-* La imagen tendrá una posición final en las coordenadas (135 en x, 550 en y).
-* Lo anterior quiere decir que la imágen tendrá un ancho de **45px** y un alto de **60px**.
+* La imagen tendrá una posición final en las coordenadas (135 en x, 550 en y) del Canvas.
+* Lo anterior quiere decir que la imágen tendrá un ancho de **45px** y un alto de **60px** (135 - 90, 550 - 490).
 * Sobre la imagen general se creará un cuadro imaginario que estará ubicado inicialmente en las coordenadas (0, 0) de la imágen.
 * Este cuadro imaginario terminará en las coordenadas (45, 60) de la imágen.
 * Esto quiere decir que el recuadro tendrá el mismo ancho que la imágen que se mostrará en el canvas.
@@ -882,8 +894,9 @@ Como el patron consiste en sumar 45 a medida que incrementan las imágenes, y no
 * Inicia en la posición 90px sobre el eje X del canvas.
 * Termina en la posición 135px del eje X del canvas.
 * Inicia en la posición 0px sobre el eje X de la imágen.
-* Termina en la posición 455px del eje X de la imágen.
-asi que basta con sumarle a esas coordenadas (45 * i) de tal forma que para la primera imágen se le sumara 0 ya que el i inicia en 0:
+* Termina en la posición 45px del eje X de la imágen.
+
+Asi que basta con sumarle a esas coordenadas (45 * i) de tal forma que para la primera imágen se le sumara 0 ya que el i inicia en 0:
 
 ```javascript
 public void pintarImagenes(Graphics2D g2d){
@@ -905,7 +918,7 @@ De esta forma se verán pintadas nuestras imágenes:
 
 # Uso de Areas dentro de Canvas
 
-Las areas y objetos gráficos especiales de figuras son también una parte importante del canvas, gracias a estos podríamos realizar una manipulación de las figuras pintadas dentro del canvas, por ejemplo podríamos seleccionar algún circulo y mover la posición de esto (con el uso de eventos claro). Con las Areas también se pueden realizar operaciones como la **sustracción o combinación** de figuras, esto es importante y realizaremos un ejemplo de esto. 
+Las **areas y objetos gráficos especiales de figuras** son también una parte importante del canvas, gracias a estos podríamos realizar una manipulación de las figuras pintadas dentro del canvas, por ejemplo podríamos seleccionar algún circulo y mover la posición de esto (con el uso de eventos claro). Con las Areas también se pueden realizar operaciones como la **sustracción o combinación** de figuras, esto es importante y realizaremos un ejemplo de esto. 
 
 Por ahora vamos a comentar la llamada de todos los otros métodos de pintura para dejar vació el canvas:
 
@@ -951,7 +964,7 @@ public void pintarAreas(Graphics2D g2d){
 
 Ya tenemos nuestro panel simulado ahora supongamos que queremos que nuestro panel tenga un borde redondeado, sabemos que con los bordes que nos proporciona **Swing** no es posible realizar este tipos de bordes, asi que podríamos crear nuestro propio borde redondeado pintándolo.
 
-Bueno para realizar esto no basta con pintar un recuadro redondeado encima, de echo este tapara lo que esta contenido en el panel, debemos crear Areas para manipulación de estas figuras, para trabajar con areas no podemos pintar las figuras como lo trabajamos anteriormente, debemos crear **ObjetosGráficos especiales de Figuras**. Para identificar las figuras que creemos y pintemos debemos cambiar el color, pero cuando se trabaja con areas la forma de cambiar el color es con el método **setPaint**.
+Para realizar esto NO basta con pintar un recuadro redondeado encima, de echo este tapara lo que esta contenido en el panel, debemos crear Areas para manipulación de estas figuras. Para trabajar con areas no podemos pintar las figuras como lo trabajamos anteriormente, debemos crear **ObjetosGráficos especiales de Figuras**. A modo de identificación, las figuras que creemos de ahora en adelante las pintaremos de otro color, pero cuando se trabaja con areas la forma de cambiar el color es con el método **setPaint**.
 
 ```javascript
 public void pintarAreas(Graphics2D g2d){
@@ -985,7 +998,7 @@ Para ejemplificar este objeto necesitamos importar su respectiva librería:
 import java.awt.geom.RoundRectangle2D;
 ```
 
-Ya ejemplificamos nuestro objeto, ahora es necesarió indicarle sus propiedades gráficas mediante el método **setRoundRect** recordando que sus propiedades gráficas son:
+Ya ejemplificamos nuestro objeto, ahora es necesarió indicarle sus propiedades gráficas mediante el método **setRoundRect**, recordando que sus propiedades gráficas son:
 * **Posición en X**.
 * **Posición en Y**.
 * **Ancho**.
@@ -1120,7 +1133,7 @@ public void pintarAreas(Graphics2D g2d){
 }
 ```
 
-Si corremos la aplicación no se notara ningún cambio pero internamente sabemos que ahora el area representa las esquinas sobrantes:
+Si corremos la aplicación no se notara ningún cambio pero internamente sabemos que ahora el area **areaFueraBorde** representa las esquinas sobrantes:
 <div align='center'>
     <img  src='https://i.imgur.com/vEMX6O6.png'>
     <p>AreaFueraBorde antes y después de la sustracción</p>
@@ -1263,7 +1276,7 @@ public void pintarAreas(Graphics2D g2d){
 
 # Uso de EventosMouseListener sobre Canvas
 
-Ya hemos usado antes los eventos del mouse para proporcionar interactividad a distintas partes de nuestro proyecto, a este punto ya dominamos las funcionalidades de los eventos del Mouse, en este caso podríamos aprovechar el manejo de eventos para dibujar figuras de manera interactiva con el usuario. Lo que queremos realizar específicamente es que una vez el usuario oprima el botón del mouse dentro del canvas, lo mantenga oprimido y arrastra el mouse, este pueda dibujar una figura en tiempo real. En este caso vamos a dibujar un rectangulo.
+Ya hemos usado antes los eventos del mouse para proporcionar interactividad a distintas partes de nuestro proyecto, a este punto ya dominamos las funcionalidades de los eventos del Mouse, en este caso podríamos aprovechar el manejo de eventos para dibujar figuras de manera interactiva con el usuario. Lo que queremos realizar específicamente es que una vez el usuario oprima el botón del mouse dentro del canvas, lo mantenga oprimido y arrastre el mouse, este pueda dibujar una figura en tiempo real. En este caso vamos a dibujar un rectangulo.
 
 
 Lo primero que vamos a realizar es dejar vació el canvas y para eso vamos a comentar la llamada del método **pintarAreas** dentro del método **paint**:
@@ -1357,7 +1370,7 @@ public void mouseDragged(MouseEvent e) {
 Para poder dibujar la figura vamos a necesitar enviarle 3 argumentos al método:
 * **Posición inicial en X**.
 * **Posición inicial en Y**.
-* **El objeto del evento para capturar la posición de arrastre.**.
+* **El objeto del evento para capturar la posición de arrastre**.
 
 ```javascript
 public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
@@ -1377,7 +1390,7 @@ public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(sRecursos.getColorAzul());
 }
 ```
-Dentro del método debemos pintar el cuadrado para esto llamaremos al método **drawRect**:
+Dentro del método debemos pintar el rectángulo, para esto llamaremos al método **drawRect**:
 
 ```javascript
 public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
@@ -1386,7 +1399,7 @@ public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
 }
 ```
 
-La posición inicial del cuadrado la estamos recibiendo por parámetro, así que lo vamos a colocar:
+La posición inicial del rectángulo la estamos recibiendo por parámetro, así que lo vamos a colocar:
 
 ```javascript
 public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
@@ -1395,7 +1408,7 @@ public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
 }
 ```
 
-Ahora debemos configurar el ancho y alto del cuadrado, para esto basta con capturar la posición del mouse a medida que este se esta arrastrando a traves del evento y le restamos la posicion inicial, en ambos casos:
+Ahora debemos configurar el ancho y alto del rectángulo, para esto basta con capturar la posición del mouse a traves del evento que se activa a medida que el mouse se esta arrastrando. Le debemos restar ademas la posicion inicial, en ambos casos:
 ```javascript
 public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(sRecursos.getColorAzul());
@@ -1409,9 +1422,9 @@ Si probamos nuestros eventos veremos algo como esto:
     <p>Intento de dibujo dentro de canvas</p>
 </div>
 
-Al parecer nuestro intento de pintar tiene algo extraño, y esto es debido a que a medida que se mueve el mouse mientras se tiene oprimido el botón izquierdo, se esta pintando un cuadrado nuevo, es decir que por cada pixel nuevo que mueve el mouse se esta pintando un nuevo cuadrado, debemos hallar la forma en que solo se vea el cuadrado actual y se borren los cuadrados anteriores, hay muchas formas de hacer esto, vamos hacer una forma rápida de hacerlo, no es la mejor forma pero por practicidad y facilidad se realizará así.
+Al parecer nuestro intento de pintar tiene algo extraño, y esto es debido a que a medida que se mueve el mouse mientras se tiene oprimido el botón izquierdo, se esta pintando un rectángulo nuevo, es decir que por cada pixel que mueve el mouse se esta pintando un nuevo rectángulo, debemos hallar la forma en que solo se vea el rectángulo actual y se borren los rectángulos anteriores, hay muchas formas de hacer esto, vamos hacer una forma rápida de hacerlo, no es la mejor forma pero por practicidad y facilidad se realizará así.
 
-Vamos a hacer que por cada vez que se active el evento, se pinte primero un cuadrado blanco que ocupe todo el canvas, esto hará un efecto de borrar cualquier rectangulo anterior que se haya dibujado a parte del actual:
+Vamos a hacer que por cada vez que se active el evento, se pinte primero un rectángulo blanco que ocupe todo el canvas, esto hará un efecto de borrar cualquier rectangulo anterior que se haya dibujado a parte del actual:
 ```javascript
 public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(Color.WHITE);
@@ -1428,14 +1441,14 @@ Vamos a ver que ocurre una vez probamos nuestro método:
 </div>
 
 Efectivamente podemos pintar rectángulos en tiempo real y se esta viendo unicamente el rectángulo actual acorde al movimiento del mouse. Sin embargo hay 2 problemas:
-* Si se ha terminado de pintar un cuadrado, es decir el usuario ha soltado el mouse y luego quiere pintar otro el anterior será borrado y esto es debido al enfoque de pintar un cuadrado blanco en el canvas, este problema se dejará asi por esta sesión y mas adelante se podrá discutir.
-* El programa unicamente pinta el cuadrado hacia una dirección, si se intenta pintar un rectangulo llenado hacia arriba o a la izquierda con respecto al punto inicial este no se pintara, este problema si lo vamos a resolver.
+* Si se ha terminado de pintar un rectángulo, es decir el usuario ha soltado el mouse y luego quiere pintar otro el anterior será borrado y esto es debido al enfoque de pintar un rectángulo blanco en el canvas, este problema se dejará asi por esta sesión y mas adelante se podrá discutir.
+* El programa unicamente pinta el rectángulo hacia una dirección, si se intenta pintar un rectángulo  hacia arriba o a la izquierda con respecto al punto inicial este no se pintara, este problema si lo vamos a resolver.
 
 Para esto debemos realizar una condición para los 4 casos:
-* En caso de pintar un rectangulo con dirección inferior derecha con respecto al punto inicial.
-* En caso de pintar un rectangulo con dirección superior derecha con respecto al punto inicial.
-* En caso de pintar un rectangulo con dirección inferior izquierda con respecto al punto inicial.
-* En caso de pintar un rectangulo con dirección superior izquierda con respecto al punto inicial.
+* En caso de pintar un rectángulo con dirección **inferior derecha** con respecto al punto inicial.
+* En caso de pintar un rectángulo con dirección **superior derecha** con respecto al punto inicial.
+* En caso de pintar un rectángulo con dirección **inferior izquierda** con respecto al punto inicial.
+* En caso de pintar un rectángulo con dirección **superior izquierda** con respecto al punto inicial.
 
 ```javascript
 public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
