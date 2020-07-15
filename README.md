@@ -1336,9 +1336,9 @@ Vamos a posicionarnos de nuevo en la clase **LienzoTemplate** y lo primero que v
 this.addMouseListener(this.lienzoComponent);
 this.addMouseMotionListener(this.lienzoComponent);
 ```
-Vamos a crear un método al cual llamaremos **pintarCuadradoTiempoReal**, este será el encargado de dibujar la figura en tiempo real a traves de los eventos del Mouse:
+Vamos a crear un método al cual llamaremos **pintarRectanguloTiempoReal**, este será el encargado de dibujar la figura en tiempo real a traves de los eventos del Mouse:
 ```javascript
-public void pintarCuadradoTiempoReal(){
+public void pintarRectanguloTiempoReal(){
 }
 ```
 
@@ -1364,7 +1364,7 @@ llamar al método que se encargará de pintar la figura:
 ```javascript
 @Override
 public void mouseDragged(MouseEvent e) {
-    this.lienzoTemplate.pintarCuadradoTiempoReal();
+    this.lienzoTemplate.pintarRectanguloTiempoReal();
 }
 ```
 Para poder dibujar la figura vamos a necesitar enviarle 3 argumentos al método:
@@ -1373,27 +1373,28 @@ Para poder dibujar la figura vamos a necesitar enviarle 3 argumentos al método:
 * **El objeto del evento para capturar la posición de arrastre**.
 
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
-    this.lienzoTemplate.pintarCuadradoTiempoReal(posicionInicialX, posicionInicialY, e);
+@Override
+public void mouseDragged(MouseEvent e) {
+    this.lienzoTemplate.pintarRectanguloTiempoReal(posicionInicialX, posicionInicialY, e);
 }
 ```
 
 Así mismo se debe recibir estos elementos como parámetros dentro del método en la clase **LienzoTemplate**:
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
 
 }
 ```
-Vamos a configurar el color del canvas para que el cuadrado pueda ser visualizado:
+Vamos a configurar el color del canvas para que el rectángulo pueda ser visualizado:
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(sRecursos.getColorAzul());
 }
 ```
 Dentro del método debemos pintar el rectángulo, para esto llamaremos al método **drawRect**:
 
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(sRecursos.getColorAzul());
     g2d.drawRect();
 }
@@ -1402,7 +1403,7 @@ public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
 La posición inicial del rectángulo la estamos recibiendo por parámetro, así que lo vamos a colocar:
 
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(sRecursos.getColorAzul());
     g2d.drawRect(x, y);
 }
@@ -1410,7 +1411,7 @@ public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
 
 Ahora debemos configurar el ancho y alto del rectángulo, para esto basta con capturar la posición del mouse a traves del evento que se activa a medida que el mouse se esta arrastrando. Le debemos restar ademas la posicion inicial, en ambos casos:
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(sRecursos.getColorAzul());
     g2d.drawRect(x, y, e.getX() - x , e.getY() - y);
 }
@@ -1426,7 +1427,7 @@ Al parecer nuestro intento de pintar tiene algo extraño, y esto es debido a que
 
 Vamos a hacer que por cada vez que se active el evento, se pinte primero un rectángulo blanco que ocupe todo el canvas, esto hará un efecto de borrar cualquier rectangulo anterior que se haya dibujado a parte del actual:
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(Color.WHITE);
     g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
     g2d.setColor(sRecursos.getColorAzul());
@@ -1451,7 +1452,7 @@ Para esto debemos realizar una condición para los 4 casos:
 * En caso de pintar un rectángulo con dirección **superior izquierda** con respecto al punto inicial.
 
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(Color.WHITE);
     g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
     g2d.setColor(sRecursos.getColorAzul());
@@ -1478,7 +1479,7 @@ Para el caso en que se dibuje el recuadro con dirección **Inferior Izquierda**:
 * El ancho del rectangulo sera la posición estática en X menos la posición que va actualizando con cada arrastre (para que quede positivo).
 * El alto sera igual a la posición que se va actualizando con el arrastre menos la posición estática en Y.
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(Color.WHITE);
     g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
     g2d.setColor(sRecursos.getColorAzul());
@@ -1504,7 +1505,7 @@ Para el caso en que se dibuje el recuadro con dirección **Superior Izquierda**:
 * El alto del rectangulo sera la posición estática en Y menos la posición que va actualizando con cada arrastre (para que quede positivo).
 
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(Color.WHITE);
     g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
     g2d.setColor(sRecursos.getColorAzul());
@@ -1530,7 +1531,7 @@ Para el caso en que se dibuje el recuadro con dirección **Superior Derecha**:
 * El alto del rectangulo sera la posición estática en Y menos la posición que va actualizando con cada arrastre (para que quede positivo).
 
 ```javascript
-public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
     g2d.setColor(Color.WHITE);
     g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
     g2d.setColor(sRecursos.getColorAzul());

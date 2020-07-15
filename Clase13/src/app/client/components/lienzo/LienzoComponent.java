@@ -39,7 +39,7 @@ public class LienzoComponent implements MouseListener, MouseMotionListener{
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        this.lienzoTemplate.pintarCuadradoTiempoReal(posicionInicialX, posicionInicialY, e);
+        this.lienzoTemplate.pintarRectanguloTiempoReal(posicionInicialX, posicionInicialY, e);
     }
 
     @Override

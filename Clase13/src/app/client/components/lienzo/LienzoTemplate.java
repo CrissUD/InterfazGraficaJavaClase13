@@ -169,7 +169,7 @@ public class LienzoTemplate extends Canvas{
         g2d.draw(area);
     }
 
-    public void pintarCuadradoTiempoReal(int x, int y, MouseEvent e){
+    public void pintarRectanguloTiempoReal(int x, int y, MouseEvent e){
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
         g2d.setColor(sRecursos.getColorAzul());
