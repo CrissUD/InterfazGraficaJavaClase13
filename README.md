@@ -1557,6 +1557,35 @@ Una vez ejecutamos nuestra aplicación vemos algo como esto:
     <p>Pintando rectángulos en tiempo real sobre el canvas.</p>
 </div>
 
+Para terminar con broche de oro, vamos a arreglar las coordenadas de **Valor Lado X y Valor Lado Y**, Actualmente solo muestra la coordenada actual del mouse mientras se tiene oprimido el botón izquierdo, pero sería bueno que nos indique el valor de los lados del cuadrado.
+
+Vamos a la clase **ConfiguraciónesComponent** y vamos a declarar dos atributos para capturar las coordenadas iniciales:
+```javascript
+// Al inicio de la clase ConfiguraciónesComponent
+private int posicionInicialX, posicionInicialY;
+```
+
+Esto lo hacemos para poder realizar el calculo de la resta y asi obtener efectivamente el valor de los lados del recuadro que se esta pintando.
+
+Vamos a capturar las coordenadas iniciales dentro del método **MousePressed**:
+```javascript
+@Override
+public void mousePressed(MouseEvent e) {
+    ...
+    this.posicionInicialX = e.getX();
+    this.posicionInicialY = e.getY();
+}
+```
+
+Finalmente dentro del método **MouseDragged** en vez de proporcionar solamente las coordenadas directamente (getX, getY) vamos a restarle los valores de la coordenada inicial (similar a como hicimos en la configuración del MouseDragged del componente Lienzo) la única diferencia es que vamos a envolver la resta dentro de un valor absoluto para que el valor siempre sea positivo.
+
+```javascript
+@Override
+public void mouseDragged(MouseEvent e) {
+    this.configuracionesTemplate.getLLadoXValor().setText(Math.abs((e.getX() - posicionInicialX)) + "");
+    this.configuracionesTemplate.getLLadoYValor().setText(Math.abs((e.getY() - posicionInicialY)) + "");
+}
+```
 # Resultado 
 
 Si has llegado hasta aquí **!Felicidades!** has aprendido acerca del uso del **Canvas** y entre varias cosas como pintar figuras básicas como Strings, Lineas, Rectángulos, Arcos, Ovalos, Poligonos e Imagenes. Aprendiste sobre el uso de las Areas y como realizar operaciones entre ellas. Finalmente aprendiste a dibujar en tiempo real figuras proporcionando una gran interactividad a traves de los eventos del Mouse. En la siguiente clase no vamos a enfocar a revisar el Servicio Gráfico **GraficosAvanzadosServices** y como el Canvas tiene un papel fundamental en la mayoría del código que se encuentra allí.
