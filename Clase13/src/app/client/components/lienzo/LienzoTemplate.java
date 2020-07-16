@@ -7,10 +7,9 @@ import java.awt.Graphics2D;
 // import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Rectangle;
-import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.RoundRectangle2D;
+// import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
